@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
                 return res.json({ success: false, message: 'Authentication failed.' });
             }
             else{
+                res.header(env.application.security.header.keys.token, token);
                 req.decoded = decoded;
 
                 next();

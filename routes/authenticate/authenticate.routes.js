@@ -27,7 +27,8 @@ function authenticate(req, res, next){
                 const token = jwt.sign(user, env.application.security.secret_key, {
                     expiresIn: env.application.security.expire 
                 });
-
+                
+                res.header(env.application.security.header.keys.token, token);
                 res.json({
                     success: true,
                     message: 'Authenticated.',
