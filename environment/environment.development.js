@@ -8,8 +8,13 @@ config.application.public_folder = '/public/dist';
 
 // Application -> Security
 config.application.security = {};
-config.application.security.secret_key = 'p@ssw0rd';
-config.application.security.expire = 86400 // In seconds (24 hours)
+config.application.security.token = {};
+config.application.security.token.secret = 'p@ssw0rd';
+config.application.security.token.expire = 86400; // In seconds (24 hours)
+
+// Application -> Security -> Encryption
+config.application.security.encryption = {};
+config.application.security.encryption.salt_factor = 10;
 
 // Application -> Security -> Header
 config.application.security.header = {};
@@ -24,6 +29,7 @@ config.application.route.prefix = '/api';
 
 // Database
 config.database = {}
-config.database.uri = 'mongodb://localhost:27017/db';
+//config.database.uri = 'mongodb://localhost:27017/db';
+config.database.uri = 'mongodb://admin:admin@ds145193.mlab.com:45193/location-bookmark';
 
 module.exports = config;

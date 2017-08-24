@@ -1,0 +1,45 @@
+<div class="container">
+    <header>
+        <div class="progressbar">
+            <app-progressbar [isShow]="isProcessing"></app-progressbar>
+        </div>
+    </header>
+    <section>
+        <div class="panel">
+            <div class="header">
+                <div class="icon">
+                    <md-icon class="material-icons icon-title">collections_bookmark</md-icon>
+                </div>
+                <div class="title">LOCATION BOOKMARK</div>
+            </div>
+            <div class="content">
+                <form novalidate [formGroup]="form_signin">
+                    <md-input-container>
+                        <md-icon mdPrefix class="material-icons icon">mail</md-icon>
+                        <input type="email" placeholder="Email" mdInput [formControl]="tbx_email">
+                        <md-error *ngIf="tbx_email.hasError('pattern')">
+                            Please enter a valid email address
+                        </md-error>
+                        <md-error *ngIf="tbx_email.hasError('required')">
+                            Email is <strong>required</strong>
+                        </md-error>
+                    </md-input-container>
+                    <md-input-container>
+                        <md-icon mdPrefix class="material-icons icon">lock</md-icon>
+                        <input type="password" placeholder="Password" maxlength="50" mdInput [formControl]="tbx_password">
+                        <md-error *ngIf="tbx_password.hasError('required')">
+                            Password is <strong>required</strong>
+                        </md-error>
+                    </md-input-container>
+                </form>
+            </div>
+            <div class="footer">
+                <button md-raised-button (click)="signinFormSubmit()" [disabled]="isProcessing">Signin</button>
+                <div class="signup">
+                    Don't have an account? <a href="#" [routerLink]="['/signup']">Signup</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+</div>

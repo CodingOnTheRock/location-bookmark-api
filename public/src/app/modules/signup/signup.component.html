@@ -1,0 +1,81 @@
+<div class="container">
+    <header>
+        <div class="progressbar">
+            <app-progressbar [isShow]="isProcessing"></app-progressbar>
+        </div>
+    </header>
+    <section>
+        <div class="panel">
+            <div class="header">
+                <div class="icon">
+                    <md-icon class="material-icons icon-title">collections_bookmark</md-icon>
+                </div>
+                <div class="title">CREATE AN ACCOUNT</div>
+            </div>
+            <div class="content">
+                <form novalidate [formGroup]="form_signup">
+                    <div>
+                        <span>
+                            <md-input-container>
+                                <input type="text" id="firstname" placeholder="Firstname" maxlength="50" 
+                                    mdInput 
+                                    [formControl]="tbx_firstname">
+                                <md-error *ngIf="tbx_firstname.hasError('required')">
+                                    Firstname is <strong>required</strong>
+                                </md-error>
+                            </md-input-container>
+                        </span>
+                        <span>
+                            <md-input-container>
+                                <input type="text" id="lastname" placeholder="Lastname" maxlength="50" 
+                                    mdInput 
+                                    [formControl]="tbx_lastname">
+                                <md-error *ngIf="tbx_lastname.hasError('required')">
+                                    Lastname is <strong>required</strong>
+                                </md-error>
+                            </md-input-container>
+                        </span>
+                    </div>
+                    <md-input-container>
+                        <input type="text" id="email" placeholder="Email" maxlength="100" 
+                            mdInput 
+                            [formControl]="tbx_email"> 
+                        <md-error *ngIf="tbx_email.hasError('required')">
+                            Email is <strong>required</strong>
+                        </md-error>
+                        <md-error *ngIf="tbx_email.hasError('pattern')">
+                            Please enter a valid email address
+                        </md-error>
+                    </md-input-container>
+                    <md-input-container>
+                        <input type="password" id="password" placeholder="Password" maxlength="50" 
+                            mdInput 
+                            [formControl]="tbx_password">
+                        <md-error *ngIf="tbx_password.hasError('required')">
+                            Password is <strong>required</strong>
+                        </md-error>
+                        <md-error *ngIf="tbx_password.hasError('minlength')">
+                            Password has too short
+                        </md-error>
+                        <md-hint>Password must be at least 8 characters</md-hint>
+                    </md-input-container>
+                    <md-input-container>
+                        <input type="password" id="confirmpassword" placeholder="Confirm Password" maxlength="50" 
+                            mdInput 
+                            [formControl]="tbx_confirmpassword">
+                        <md-error *ngIf="tbx_confirmpassword.hasError('required')">
+                            Confirm Password is <strong>required</strong>
+                        </md-error>
+                    </md-input-container>
+                </form>
+            </div>
+            <div class="footer">
+                <button md-raised-button (click)="signupFormSubmit()" [disabled]="isProcessing">Signup</button>
+                <div class="signup">
+                    Already have an account? <a [routerLink]="['/signin']">Signin</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+</div>
