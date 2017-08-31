@@ -2,15 +2,16 @@
 import { Injectable } from '@angular/core';
 
 // Services
-import { HttpClient } from './../../core/net/http-client';
+import { LocalStorageUtils } from './../../core/browser/local-storage-utils';
+import { environment } from './../../../environments/environment';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private localStorageUtils: LocalStorageUtils) { }
 
   isLoggedIn() {
-    const token = this.httpClient.getToken();
+    const token = this.localStorageUtils.getToken(environment.application.security.token_key);
 
     if (token) {
       return true;

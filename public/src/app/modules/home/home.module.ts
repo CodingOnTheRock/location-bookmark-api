@@ -1,22 +1,16 @@
 // Core Modules
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 // Application Modules
+import { SharedModule } from './../shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
 
 // Components
-import { HomeComponent } from './home.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
-
+    SharedModule,
     HomeRoutingModule
   ],
   declarations: [

@@ -7,6 +7,9 @@ module.exports = (app) => {
     // Authenticate
     require('./authenticate/authenticate.routes')(router);
 
+    // Signup
+    require('./signup/signup.routes')(router);
+
     // User
     require('./user/user.routes')(router);
 

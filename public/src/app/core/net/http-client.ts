@@ -1,64 +1,29 @@
 // Core Modules
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-
-// Services
-import { LocalStorageUtils } from './../browser/local-storage-utils';
+import { Http, Headers, RequestOptionsArgs } from '@angular/http';
 
 @Injectable()
 export class HttpClient {
-    constructor(private http: Http, private localStorageUtils: LocalStorageUtils) {}
-
-    getToken() {
-        const token = this.localStorageUtils.getToken();
-        if (token) {
-            return token;
-        }
-
-        return null;
-    }
-
-    setToken(token) {
-        this.localStorageUtils.setToken(token);
-    }
-
-    createAuthorizationHeader() {
-        const headers = new Headers();
-
-        // Set token
-        const token = this.getToken();
-        if (token) {
-            headers.append('Authorization', token);
-        }
-
-        return headers;
-    }
+    constructor(private http: Http) {}
 
     // GET
-    get(url) {
-        const headers = this.createAuthorizationHeader();
+    get(url: string, options: RequestOptionsArgs) {
 
-        return this.http.get(url, { headers: headers });
+        return this.http.get(url, options);
     }
 
     // POST
-    post(url, data) {
-        const headers = this.createAuthorizationHeader();
-
-        return this.http.post(url, data, { headers: headers });
+    post(url, data, options) {
+        return this.http.post(url, data, options);
     }
 
     // PUT
-    put(url, data) {
-        const headers = this.createAuthorizationHeader();
-
-        return this.http.put(url, data, { headers: headers });
+    put(url, data, options) {
+        return this.http.put(url, data, options);
     }
 
     // DELETE
-    delete(url) {
-        const headers = this.createAuthorizationHeader();
-
-        return this.http.delete(url, { headers: headers });
+    delete(url, options) {
+        return this.http.delete(url, options);
     }
 }
