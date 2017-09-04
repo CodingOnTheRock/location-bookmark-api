@@ -9,6 +9,7 @@ module.exports = (router) => {
 
 function signup(req, res, next){
     const firstname = req.body.firstname;
+    const name = req.body.name;
     const lastname = req.body.lastname;
     const email = req.body.email;
     const password = req.body.password;
@@ -21,6 +22,7 @@ function signup(req, res, next){
 
             const signupUser = new User({
                 firstname: firstname,
+                name: name,
                 lastname: lastname,
                 email: email,
                 password: password,
