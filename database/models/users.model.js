@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const crypto = require('./../../core/utils/crypto');
 const env = require('./../../environment');
 
-const usersSchema = mongoose.Schema({
+const Schema = mongoose.Schema;
+const usersSchema = Schema({
     firstname: {
         type: String,
         required: true,
@@ -64,6 +65,10 @@ usersSchema.pre('findOneAndUpdate', function(next){
     const salt_factor = env.application.security.encryption.salt_factor;
     const updateUser = this._update;
 
+    // updated property
+    updateBookmark.updated = new Date();
+
+    // password property
     if(!updateUser.password){
         next();
         return;

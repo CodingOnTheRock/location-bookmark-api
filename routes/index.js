@@ -13,6 +13,9 @@ module.exports = (app) => {
     // User
     require('./user/user.routes')(router);
 
+    // Bookmark
+    require('./bookmark/bookmark.routes')(router);
+
     // Route Prefix
     app.use(env.application.route.prefix, router);
 };
