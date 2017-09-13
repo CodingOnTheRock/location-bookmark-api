@@ -50,6 +50,7 @@ usersSchema.pre('save', function(next){
     const salt_factor = env.application.security.encryption.salt_factor;
     const user = this;
 
+    // password property
     crypto.genHash(user.password, salt_factor)
         .then((hash) => {
             user.password = hash;
