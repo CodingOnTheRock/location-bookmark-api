@@ -35,6 +35,10 @@ const usersSchema = Schema({
         required: true,
         trim: true
     },
+    photo: {
+        type: String,
+        trim: true,
+    },
     created: {
         type: Date
     },
@@ -67,7 +71,7 @@ usersSchema.pre('findOneAndUpdate', function(next){
     const updateUser = this._update;
 
     // updated property
-    updateBookmark.updated = new Date();
+    updateUser.updated = new Date();
 
     // password property
     if(!updateUser.password){

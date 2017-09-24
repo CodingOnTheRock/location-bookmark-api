@@ -5,6 +5,7 @@ config.application = {};
 config.application.MODE = 'development';
 config.application.PORT = 2000;
 config.application.public_folder = '/public/dist';
+config.application.resources_folder = '/resources';
 
 // Application -> Security
 config.application.security = {};
@@ -26,6 +27,19 @@ config.application.security.header.keys.token = 'Token';
 // Application -> Route
 config.application.route = {};
 config.application.route.prefix = '/api';
+
+// Application -> Modules
+config.application.modules = {};
+
+// Application -> Modules -> User
+config.application.modules.user = {};
+config.application.modules.user.path = './resources/users/';
+config.application.modules.user.photo = {};
+config.application.modules.user.photo.field_name = 'photo';
+config.application.modules.user.photo.path = '/photo';
+config.application.modules.user.photo.mime_type = [ 'image/jpeg', 'image/png' ];
+config.application.modules.user.photo.size_limit = 1;
+config.application.modules.user.photo.size_limit_unit = 'MB';
 
 // Database
 config.database = {}
