@@ -1,12 +1,5 @@
 const User = require('./../../database/models/users.model');
 
-module.exports = (router) => {
-    // POST
-    router.post('/signup', signup);
-
-    return router;
-}
-
 function signup(req, res, next){
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
@@ -38,3 +31,10 @@ function signup(req, res, next){
             res.json(err);
         });
 }
+
+module.exports = (app, router) => {
+    // POST
+    router.post('/signup', signup);
+
+    return router;
+};

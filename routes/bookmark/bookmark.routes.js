@@ -74,7 +74,7 @@ function deleteBookmark(req, res, next){
         });
 }
 
-module.exports = (router) => {
+module.exports = (app, router) => {
     // GET
     router.get('/bookmarks', auth, getBookmarks);
     router.get('/bookmarks/:bid', auth, getBookmark);

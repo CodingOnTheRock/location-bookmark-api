@@ -5,17 +5,19 @@ const env = require('./../environment');
 
 module.exports = (app) => {
     // Authenticate
-    require('./authenticate/authenticate.routes')(router);
+    require('./authenticate/authenticate.routes')(app, router);
 
     // Signup
-    require('./signup/signup.routes')(router);
+    require('./signup/signup.routes')(app, router);
 
     // User
-    require('./user/user.routes')(router);
+    require('./user/user.routes')(app, router);
 
     // Bookmark
-    require('./bookmark/bookmark.routes')(router);
+    require('./bookmark/bookmark.routes')(app, router);
 
     // Route Prefix
     app.use(env.application.route.prefix, router);
+
+    return router;
 };

@@ -74,19 +74,23 @@ usersSchema.pre('findOneAndUpdate', function(next){
     updateUser.updated = new Date();
 
     // password property
-    if(!updateUser.password){
-        next();
-        return;
+    if(updateUser.password){
+        const uid = updateUser._id;
+        User.getUserById(uid)
+            .then((user) => {
+                if(user.password != updateUser.password){
+                    crypto.genHash(updateUser.password, salt_factor)
+                    .then((hash) => {
+                        updateUser.password = hash;
+                    })
+                    .catch((err) => {
+                        next(err);
+                    });
+                }
+            });
     }
 
-    crypto.genHash(updateUser.password, salt_factor)
-        .then((hash) => {
-            updateUser.password = hash;
-            next();
-        })
-        .catch((err) => {
-            next(err);
-        });
+    next()
 });
 
 const User = module.exports = mongoose.model('Users', usersSchema);
@@ -150,6 +154,26 @@ module.exports.updateUser = (id, user) => {
             resolve(doc);
         })
     });
+}
+
+// Update User Photo
+module.exports.updateUserPhoto = (id, photo) => {
+    return new Promise((resolve, reject) => {
+        User.getUserById(id)
+            .then((user) => {
+                user.photo = photo;
+
+                return User.updateUser(id, user);
+            })
+            .then((user) => {
+                resolve(user);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+    
+    return promise;
 }
 
 // Delete User

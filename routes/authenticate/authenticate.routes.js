@@ -4,16 +4,6 @@ const auth = require('./../../middlewares/authenticate.middleware');
 const User = require('./../../database/models/users.model');
 const env = require('./../../environment');
 
-module.exports = (router) => {
-    // GET
-    router.get('/profile', auth, getProfile);
-
-    // POST
-    router.post('/authenticate', authenticate);
-
-    return router;
-}
-
 function getProfile(req, res, next){
     return res.json({ success: true, decoded: req.decoded });
 }
@@ -59,3 +49,13 @@ function authenticate(req, res, next){
             res.json(err);
         });
 }
+
+module.exports = (app, router) => {
+    // GET
+    router.get('/profile', auth, getProfile);
+
+    // POST
+    router.post('/authenticate', authenticate);
+
+    return router;
+};
