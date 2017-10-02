@@ -68,27 +68,10 @@ usersSchema.pre('save', function(next){
 // Before findOneAndUpdate command execute. it will be trigger this callback
 usersSchema.pre('findOneAndUpdate', function(next){
     const salt_factor = env.application.security.encryption.salt_factor;
-    const updateUser = this._update;
+    const update = this._update;
 
     // updated property
-    updateUser.updated = new Date();
-
-    // password property
-    if(updateUser.password){
-        const uid = updateUser._id;
-        User.getUserById(uid)
-            .then((user) => {
-                if(user.password != updateUser.password){
-                    crypto.genHash(updateUser.password, salt_factor)
-                    .then((hash) => {
-                        updateUser.password = hash;
-                    })
-                    .catch((err) => {
-                        next(err);
-                    });
-                }
-            });
-    }
+    update.updated = new Date();
 
     next()
 });

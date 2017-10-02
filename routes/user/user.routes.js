@@ -1,32 +1,11 @@
 const path = require('path');
 
 const auth = require('./../../middlewares/authenticate.middleware');
+const crypto = require('./../../core/utils/crypto');
 const text = require('./../../core/utils/text');
 const User = require('./../../database/models/users.model');
 const photo = require('./../../modules/user/photo.module');
 const env = require('./../../environment');
-
-function getUsers(req, res, next){
-    User.getUsers()
-        .then((users) => {
-            return res.json(users);
-        })
-        .catch((err) => {
-            return res.json(err);
-        });
-}
-
-function getUserById(req, res, next){
-    const id = req.params.id;
-
-    User.getUserById(id)
-        .then((user) => {
-            return res.json(user);
-        })
-        .catch((err) => {
-            return res.json(err);
-        });
-}
 
 function getUserPhoto(req, res, next){
     const uid = req.params.uid;
@@ -68,10 +47,13 @@ function uploadPhoto(req, res, next){
             const filePath = req.file.path;
             const newFilePath = text.replaceAll(filePath, '\\', '/');
             User.updateUserPhoto(uid, newFilePath)
-                .then((user) => {});
-
-            message.success = true;
-            return res.json(message);
+                .then((user) => {
+                    message.success = true;
+                    return res.json(message);
+                })
+                .catch((err) => {
+                    throw err;
+                });
         })
         .catch((err) => {
             message.message = err;
@@ -80,48 +62,66 @@ function uploadPhoto(req, res, next){
 }
 
 function updateUser(req, res, next){
-    const id = req.params.id;
-    const updateUser = req.body;
+    const uid = req.decoded._doc._id;
+    const update = req.body;
 
-    User.getUserById(id)
+    User.updateUser(uid, update)
         .then((user) => {
-            return User.updateUser(user._id, updateUser);
-        })
-        .then((data) => {
-            res.json(data);
+            return res.json(user);
         })
         .catch((err) => {
             return res.json(err);
         });
 }
 
-function deleteUser(req, res, next){
-    const id = req.params.id;
+function updateUserPassword(req, res, next){
+    const uid = req.decoded._doc._id;
+    const currentPassword = req.body.currentPassword;
+    const newPassword = req.body.newPassword;
+    const salt_factor = env.application.security.encryption.salt_factor;
+    const message = { success: false, message: '' };
 
-    User.deleteUser(id)
-        .then((data) => {
-            return res.json(data);
+    User.getUserById(uid)
+        .then((user) => {
+            // Check user
+            if(!user){
+                throw 'Not found user';
+            }
+
+            // Compare current password
+            const isCurrentPasswordCorrect = crypto.compareHashSync(currentPassword, user.password);
+            if(!isCurrentPasswordCorrect){
+                throw 'Current password is incorrect';
+            }
+
+            // Update password
+            user.password = crypto.genHashSync(newPassword, salt_factor);
+            User.updateUser(uid, user)
+                .then((user) => {
+                    message.success = true;
+                    return res.json(message);
+                })
+                .catch((err) => {
+                    throw err;
+                });
         })
         .catch((err) => {
-            return res.json(err);
+            message.message = err;
+            return res.json(message);
         });
 }
 
 module.exports = (app, router) => {
     // GET
-    router.get('/users', auth, getUsers);
-    router.get('/users/:id', auth, getUserById);
     app.get('/resources/users/:uid/photo/:photo', getUserPhoto);
 
     // POST
     router.post('/user', auth, createUser);
-    router.post('/users/:id/photo', auth, uploadPhoto);
+    router.post('/user/photo', auth, uploadPhoto);
 
     // PUT
-    router.put('/users/:id', auth, updateUser);
-    
-    // DELETE
-    router.delete('/users/:id', auth, deleteUser);
+    router.put('/user', auth, updateUser);
+    router.put('/user/update/password', auth, updateUserPassword);
 
     return router;
 };

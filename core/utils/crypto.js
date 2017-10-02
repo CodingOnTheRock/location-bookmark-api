@@ -20,6 +20,25 @@ module.exports.genHash = (value, round) => {
     });
 }
 
+module.exports.genHashSync = (value, round) => {
+    const salt = bcrypt.genSaltSync(round);
+    const hash = bcrypt.hashSync(value, salt);
+
+    return hash;
+}
+
 module.exports.compareHash = (plainText, cipherText) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(plainText, cipherText)
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((err) => {
+                reject(err);
+            })
+    });
+}
+
+module.exports.compareHashSync = (plainText, cipherText) => {
     return bcrypt.compareSync(plainText, cipherText);
 }

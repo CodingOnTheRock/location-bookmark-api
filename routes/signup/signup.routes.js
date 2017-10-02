@@ -22,13 +22,13 @@ function signup(req, res, next){
                 created: new Date()
             });
 
-            return User.create(signupUser);
+            return User.createUser(signupUser);
         })
         .then((user) => {
             return res.json({ success: true, message: 'Signup successful' });
         })
         .catch((err) => {
-            res.json(err);
+            return res.json(err);
         });
 }
 

@@ -25,7 +25,7 @@ function authenticate(req, res, next){
             return crypto.genHash(password, salt_factor);
         })
         .then((hashPassword) => {
-            const isPasswordMatch = crypto.compareHash(password, currentUser.password);
+            const isPasswordMatch = crypto.compareHashSync(password, currentUser.password);
 
             if(!isPasswordMatch){
                 return res.json({ success: false, message: 'Authentication failed. Incorrect password.' });
@@ -37,16 +37,13 @@ function authenticate(req, res, next){
             const token = jwt.sign(currentUser, secret, {
                 expiresIn: expire 
             });
-            
+            const message = { success: true, message: 'Authenticated.', token: token };
+
             res.header(token_key, token);
-            res.json({
-                success: true,
-                message: 'Authenticated.',
-                token: token
-            });
+            return res.json(message);
         })
         .catch((err) => {
-            res.json(err);
+            return res.json(err);
         });
 }
 

@@ -12,6 +12,7 @@ module.exports = (app) => {
 
     // User
     require('./user/user.routes')(app, router);
+    require('./user/user.admin.routes')(app, router);
 
     // Bookmark
     require('./bookmark/bookmark.routes')(app, router);

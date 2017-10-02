@@ -55,7 +55,7 @@ function updateBookmark(req, res, next){
             return Bookmark.updateBookmark(bid, updateBookmark);
         })
         .then((data) => {
-            res.json(data);
+            return res.json(data);
         })
         .catch((err) => {
             return res.json(err);
