@@ -2,7 +2,7 @@ const auth = require('./../../middlewares/authenticate.middleware');
 const Bookmark = require('./../../database/models/bookmarks.model');
 
 function getBookmarks(req, res, next){
-    const uid = req.decoded._doc._id;
+    const uid = req.user._id;
 
     Bookmark.getBookmarks(uid)
         .then((bookmarks) => {
@@ -14,7 +14,7 @@ function getBookmarks(req, res, next){
 }
 
 function getBookmark(req, res, next){
-    const uid = req.decoded._doc._id;
+    const uid = req.user._id;
     const bid = req.params.bid;
 
     Bookmark.getBookmark(uid, bid)
@@ -27,7 +27,7 @@ function getBookmark(req, res, next){
 }
 
 function createBookmark(req, res, next){
-    const uid = req.decoded._doc._id;
+    const uid = req.user._id;
     const bookmark = new Bookmark({
         name: req.body.name,
         description: req.body.description,
@@ -46,7 +46,7 @@ function createBookmark(req, res, next){
 }
 
 function updateBookmark(req, res, next){
-    const uid = req.decoded._doc._id;
+    const uid = req.user._id;
     const bid = req.params.bid;
     const updateBookmark = req.body;
 
@@ -76,17 +76,17 @@ function deleteBookmark(req, res, next){
 
 module.exports = (app, router) => {
     // GET
-    router.get('/bookmarks', auth, getBookmarks);
-    router.get('/bookmarks/:bid', auth, getBookmark);
+    router.get('/bookmarks', auth.authen, getBookmarks);
+    router.get('/bookmarks/:bid', auth.authen, getBookmark);
 
     // POST
-    router.post('/bookmark', auth, createBookmark)
+    router.post('/bookmark', auth.authen, createBookmark)
 
     // PUT
-    router.put('/bookmarks/:bid', auth, updateBookmark);
+    router.put('/bookmarks/:bid', auth.authen, updateBookmark);
     
     // DELETE
-    router.delete('/bookmarks/:bid', auth, deleteBookmark);
+    router.delete('/bookmarks/:bid', auth.authen, deleteBookmark);
 
     return router;
 };

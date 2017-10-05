@@ -79,17 +79,17 @@ function deleteUser(req, res, next){
 
 module.exports = (app, router) => {
     // GET
-    router.get('/users', auth, getUsers);
-    router.get('/users/:uid', auth, getUserById);
+    router.get('/users', auth.authen, getUsers);
+    router.get('/users/:uid', auth.authen, getUserById);
 
     // POST
-    router.post('/users/:uid/photo', auth, uploadPhoto);
+    router.post('/users/:uid/photo', auth.authen, uploadPhoto);
 
     // PUT
-    router.put('/users/:uid', auth, updateUser);
+    router.put('/users/:uid', auth.authen, updateUser);
     
     // DELETE
-    router.delete('/users/:uid', auth, deleteUser);
+    router.delete('/users/:uid', auth.authen, deleteUser);
 
     return router;
 };

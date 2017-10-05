@@ -43,7 +43,7 @@ function uploadPhoto(req, res, next){
     photo.upload(req, res)
         .then(() => {
             // Update user's photo
-            const uid = req.decoded._doc._id;
+            const uid = req.user._id;
             const filePath = req.file.path;
             const newFilePath = text.replaceAll(filePath, '\\', '/');
             User.updateUserPhoto(uid, newFilePath)
@@ -62,7 +62,7 @@ function uploadPhoto(req, res, next){
 }
 
 function updateUser(req, res, next){
-    const uid = req.decoded._doc._id;
+    const uid = req.user._id;
     const update = req.body;
 
     User.updateUser(uid, update)
@@ -75,7 +75,7 @@ function updateUser(req, res, next){
 }
 
 function updateUserPassword(req, res, next){
-    const uid = req.decoded._doc._id;
+    const uid = req.user._id;
     const currentPassword = req.body.currentPassword;
     const newPassword = req.body.newPassword;
     const salt_factor = env.application.security.encryption.salt_factor;
@@ -116,12 +116,12 @@ module.exports = (app, router) => {
     app.get('/resources/users/:uid/photo/:photo', getUserPhoto);
 
     // POST
-    router.post('/user', auth, createUser);
-    router.post('/user/photo', auth, uploadPhoto);
+    router.post('/user', auth.authen, createUser);
+    router.post('/user/photo', auth.authen, uploadPhoto);
 
     // PUT
-    router.put('/user', auth, updateUser);
-    router.put('/user/update/password', auth, updateUserPassword);
+    router.put('/user', auth.authen, updateUser);
+    router.put('/user/update/password', auth.authen, updateUserPassword);
 
     return router;
 };

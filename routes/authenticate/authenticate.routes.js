@@ -5,7 +5,7 @@ const User = require('./../../database/models/users.model');
 const env = require('./../../environment');
 
 function getProfile(req, res, next){
-    return res.json({ success: true, decoded: req.decoded });
+    return res.json({ success: true, profile: req.user, token: req.token });
 }
 
 function authenticate(req, res, next){
@@ -49,7 +49,7 @@ function authenticate(req, res, next){
 
 module.exports = (app, router) => {
     // GET
-    router.get('/profile', auth, getProfile);
+    router.get('/profile', auth.authen, auth.genToken, getProfile);
 
     // POST
     router.post('/authenticate', authenticate);

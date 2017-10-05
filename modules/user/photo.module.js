@@ -8,7 +8,7 @@ const USER_PHOTO_PATH = env.application.modules.user.photo.path;
 const FIELD_NAME = env.application.modules.user.photo.field_name;
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        const uid = req.decoded._doc._id;
+        const uid = req.user._id;
         const path = USER_RESOURCES_DIR + uid + USER_PHOTO_PATH;
 
         // Create folder
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
         callback(null, path);
     },
     filename: (req, file, callback) => {
-        const uid = req.decoded._doc._id;
+        const uid = req.user._id;
         const extension = filesystem.getFileExtension(file.originalname);
         const filename = uid + '_' + Date.now() + extension; 
 
