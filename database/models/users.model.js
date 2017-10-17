@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('./../../core/utils/crypto');
+const filesystem = require('./../../core/utils/filesystem');
 const env = require('./../../environment');
 
 const Schema = mongoose.Schema;
@@ -144,6 +145,10 @@ module.exports.updateUserPhoto = (id, photo) => {
     return new Promise((resolve, reject) => {
         User.getUserById(id)
             .then((user) => {
+                // Remove previous photo
+                filesystem.removeFile(user.photo);
+
+                // Update new photo
                 user.photo = photo;
 
                 return User.updateUser(id, user);
